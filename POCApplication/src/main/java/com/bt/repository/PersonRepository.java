@@ -2,6 +2,7 @@ package com.bt.repository;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -14,7 +15,7 @@ import com.bt.pojo.Person;
 @Repository
 public class PersonRepository {
 
-	 Set<Person> list= new LinkedHashSet();
+	static Set<Person> list= new LinkedHashSet();
 	
 	private  Set<Person> allData(){
 		
@@ -75,19 +76,43 @@ public class PersonRepository {
 
 	public Set<Person> saveUpdatePerson(Person person) {
 		list.remove(person);
-		
-		
-		
+	
 		list.add(person);
 
-	/*	
-		for(Person per:list) {
-			if(per.getId()==person.getId()) {
-				per=person;
+		return findAll();
+	}
+	
+	public Person findByPersonId(int id){
+		
+		Person perso=new Person();
+		
+		Iterator iterator = list.iterator();
+		while (iterator.hasNext()) {
+			Person person = (Person) iterator.next();
+
+			if (person.getId() == id) {
+				perso=person;
 			}
 		}
-		*/
-		return findAll();
+		return perso;
+	}
+	
+	
+	public int deletePersonById(int id) {
+
+		Person p=new Person();
+		
+		Iterator iterator = list.iterator();
+		while (iterator.hasNext()) {
+			Person person = (Person) iterator.next();
+
+			if (person.getId() == id) {
+				p=person;
+			}
+			list.remove(p);
+		}
+		return id;
+
 	}
 
 }

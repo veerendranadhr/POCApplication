@@ -3,10 +3,12 @@ package com.bt;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -21,27 +23,37 @@ import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import com.bt.controller.rest.PersonController;
 import com.bt.pojo.Item;
 import com.bt.pojo.Person;
 import com.bt.repository.PersonRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-@WebMvcTest(PersonController.class)
 public class PersonTest {
 
-	 	@Autowired
 	    private MockMvc mvc;
+	    
+	    @Autowired
+	    private WebApplicationContext context;
 	 
-	 	
+	    @Before
+	 	public void setup() {
+	 		mvc=MockMvcBuilders.webAppContextSetup(context).build();
+	 	}
+	    
+	    private ObjectMapper mapper=new ObjectMapper();
+	 /*	
 	    @MockBean
 	    private PersonRepository repository;
-	    
+	  */  
 	    
 	    @Test
-	    public void givenEmployees_whenGetEmployees_thenReturnJsonArray()
+	    public void givenPerson()
 	      throws Exception {
 	         	        
 	        ArrayList listOfItems=new ArrayList<Item>();
@@ -64,15 +76,21 @@ public class PersonTest {
 	        list.add(perOne);
 	        list.add(perTwo);
 	         
-	        Mockito.when(repository.findAll()).thenReturn(list);
+//	        Mockito.when(repository.findAll()).thenReturn(list);
 	        	     
 	        RequestBuilder requestBuilder=MockMvcRequestBuilders.get("/persons").accept(MediaType.APPLICATION_JSON);
 	        
 	        MvcResult mvcResult=mvc.perform(requestBuilder).andReturn();
 	        
-	        System.out.println(mvcResult.toString());
+	        System.out.println(mvcResult.toString()+"***************************");
+	        String data=mvcResult.getResponse().getContentAsString();
+	       List<LinkedHashMap<String, Object>> listOb= mapper.readValue(data, List.class);
+	        System.out.println(listOb.get(0).get("name"));
+	        System.out.println(listOb.get(1).get("name"));
+	        System.out.println(listOb.get(2).get("name"));
+	     
 	        
-	        Assert.assertEquals(1, 1);
+	        Assert.assertEquals("Raja", listOb.get(0).get("name"));
 	//        given(repository.save(alex).willReturn(allEmployees);
 	/*     
 	        mvc.perform(get("/persons")
@@ -83,5 +101,33 @@ public class PersonTest {
 	          */
 	    }	
 	 
+	    
+	    @Test
+	    public void given() throws Exception {
+	        	     
+	        RequestBuilder requestBuilder=MockMvcRequestBuilders.get("/onlyPerson/10/id").accept(MediaType.APPLICATION_JSON);
+	        
+	        MvcResult mvcResult=mvc.perform(requestBuilder).andReturn();
+	        
+	        System.out.println(mvcResult.toString()+"***************************");
+	        String data=mvcResult.getResponse().getContentAsString();
+	       List<LinkedHashMap<String, Object>> listOb= mapper.readValue(data, List.class);
+	        System.out.println(listOb.get(0).get("name"));
+	        
+	        System.out.println(listOb.get(0).get("id"));
+	        System.out.println(listOb.get(0).get("age"));
+	        System.out.println(listOb.get(0).get("items"));
+	     
+	        
+	        Assert.assertEquals("Raja", listOb.get(0).get("name"));
+	  //      Assert.assertEquals(10, listOb.get(0).get("id"));
+	  //      Assert.assertEquals(50, listOb.get(0).get("age"));
+
+	        
+
+	    }	
+	    
+	    
+	    
 	
 }
