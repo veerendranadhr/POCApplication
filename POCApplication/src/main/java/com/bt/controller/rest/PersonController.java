@@ -17,6 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.bt.pojo.Person;
 import com.bt.repository.PersonRepository;
+import com.bt.service.PersonService;
 
 @RestController
 public class PersonController {
@@ -25,22 +26,25 @@ public class PersonController {
 	  @Autowired
 	  private PersonRepository repository;
 
+	  @Autowired
+	  private PersonService personService;
+	  
 	
 	  @GetMapping("/persons")
 	  public Set<Person> all() {
-	    return repository.findAll();
+	    return personService.findAll();
 	  }
 	  
 	  @GetMapping("/onlyPerson/{id}/id")
 	  public Person returnByPersonId(@PathVariable int id) {
 		  System.out.println("id value  : "+ id);
-	    return repository.findByPersonId(id);
+	    return personService.findByPersonId(id);
 	  }
 	  
 	  @PostMapping("/person")
 	  public Set<Person> newEmployee(@RequestBody Person newEmployee) {
 		 
-	    return repository.save(newEmployee);
+	    return personService.save(newEmployee);
 	  }
 	
 	  @PutMapping(value = "/updatePerson", consumes = "application/json", produces = "application/json")
@@ -49,15 +53,16 @@ public class PersonController {
 			    response.setHeader("Location", ServletUriComponentsBuilder.fromCurrentContextPath()
 			      .path("/findPerson/" + person.getId()).toUriString());
 			     
-			    return repository.saveUpdatePerson(person);
+			    return personService.saveUpdatePerson(person);
 			}
 	 
-		 
+	/*	 
 	  @DeleteMapping(value = "/deletePerson/{id}/id")
-	  public int deletePerson(@PathVariable int id) {
+	  public int deletePerson(@PathVariable int id)throws ResourceNotFoundException {
 			   System.out.println("*********************** delete operation "+ id);
-				    return repository.deletePersonById(id);
+				    return repository.deletePersonById(id).orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
+;
 		}
-	 
+	 */
 	 
 }

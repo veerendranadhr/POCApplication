@@ -53,8 +53,7 @@ public class PersonTest {
 	  */  
 	    
 	    @Test
-	    public void givenPerson()
-	      throws Exception {
+	    public void givenPerson() throws Exception {
 	         	        
 	        ArrayList listOfItems=new ArrayList<Item>();
 			Item item=new Item();
@@ -75,9 +74,7 @@ public class PersonTest {
 	         
 	        list.add(perOne);
 	        list.add(perTwo);
-	         
-//	        Mockito.when(repository.findAll()).thenReturn(list);
-	        	     
+	         	        	     
 	        RequestBuilder requestBuilder=MockMvcRequestBuilders.get("/persons").accept(MediaType.APPLICATION_JSON);
 	        
 	        MvcResult mvcResult=mvc.perform(requestBuilder).andReturn();
@@ -87,23 +84,15 @@ public class PersonTest {
 	       List<LinkedHashMap<String, Object>> listOb= mapper.readValue(data, List.class);
 	        System.out.println(listOb.get(0).get("name"));
 	        System.out.println(listOb.get(1).get("name"));
-	        System.out.println(listOb.get(2).get("name"));
-	     
+	        System.out.println(listOb.get(2).get("name"));	     
 	        
 	        Assert.assertEquals("Raja", listOb.get(0).get("name"));
-	//        given(repository.save(alex).willReturn(allEmployees);
-	/*     
-	        mvc.perform(get("/persons")
-	          .contentType(MediaType.APPLICATION_JSON))
-	          .andExpect(status().isOk())
-	          .andExpect(jsonPath("$", hasSize(1)))
-	          .andExpect(jsonPath("$[0].name", is(alex.getName())));
-	          */
+
 	    }	
 	 
 	    
 	    @Test
-	    public void given() throws Exception {
+	    public void givenById() throws Exception {
 	        	     
 	        RequestBuilder requestBuilder=MockMvcRequestBuilders.get("/onlyPerson/10/id").accept(MediaType.APPLICATION_JSON);
 	        
@@ -111,23 +100,77 @@ public class PersonTest {
 	        
 	        System.out.println(mvcResult.toString()+"***************************");
 	        String data=mvcResult.getResponse().getContentAsString();
-	       List<LinkedHashMap<String, Object>> listOb= mapper.readValue(data, List.class);
-	        System.out.println(listOb.get(0).get("name"));
+	        Person respPerson= mapper.readValue(data, Person.class);
+	        System.out.println(data);
 	        
-	        System.out.println(listOb.get(0).get("id"));
-	        System.out.println(listOb.get(0).get("age"));
-	        System.out.println(listOb.get(0).get("items"));
-	     
-	        
-	        Assert.assertEquals("Raja", listOb.get(0).get("name"));
-	  //      Assert.assertEquals(10, listOb.get(0).get("id"));
-	  //      Assert.assertEquals(50, listOb.get(0).get("age"));
+	        Person person= new Person();
+			person.setId(10);
+			person.setName("Raja");
+			person.setAge(50);
+			
+			ArrayList listOfItems=new ArrayList<Item>();
+			Item item=new Item();
+			item.setId(5555);
+			item.setItemName("car");
+			item.setItemPrice(600000);
+			listOfItems.add(item);
+			
+			Item item2=new Item();
+			item2.setId(5556);
+			item2.setItemName("watch");
+			item2.setItemPrice(6000);
+			listOfItems.add(item2);
+			
+			person.setItems(listOfItems);	        
 
+	        System.out.println(respPerson.toString()+"********************");
 	        
+	        Assert.assertEquals(person,respPerson);   
 
 	    }	
-	    
-	    
-	    
 	
+	    /*
+	    @Test
+	    public void DeletePersonGivenById() throws Exception {
+	        	     
+	        RequestBuilder requestBuilder=MockMvcRequestBuilders.get("/deletePerson/10/id").accept(MediaType.APPLICATION_JSON);
+	        
+	        MvcResult mvcResult=mvc.perform(requestBuilder).andReturn();
+	        
+	        System.out.println(mvcResult.toString()+"***************************");
+	        String data=mvcResult.getResponse().getContentAsString();
+	        Person respPerson= mapper.readValue(data, Person.class);
+	        System.out.println(data);
+	        
+	        Person person= new Person();
+			person.setId(10);
+			person.setName("Raja");
+			person.setAge(50);
+			
+			ArrayList listOfItems=new ArrayList<Item>();
+			Item item=new Item();
+			item.setId(5555);
+			item.setItemName("car");
+			item.setItemPrice(600000);
+			listOfItems.add(item);
+			
+			Item item2=new Item();
+			item2.setId(5556);
+			item2.setItemName("watch");
+			item2.setItemPrice(6000);
+			listOfItems.add(item2);
+			
+			person.setItems(listOfItems);	        
+
+	        System.out.println(respPerson.toString()+"********************");
+	        
+	        Assert.assertEquals(person,respPerson);   
+
+	    }
+	    */
+	
+	    
+	    
+	    
+	    
 }
