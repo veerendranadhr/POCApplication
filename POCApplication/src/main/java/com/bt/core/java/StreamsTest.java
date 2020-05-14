@@ -9,10 +9,8 @@ import java.util.stream.Stream;
 public class StreamsTest {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 
 		ArrayList<Integer> list=new ArrayList<Integer>();
-		
 		
 		list.add(12);
 		list.add(126);
@@ -141,8 +139,9 @@ public class StreamsTest {
 		System.out.println();
 		
 
-		
-		
+		System.out.println("Changing the Collection data into Array data and printing using Lambda Expressions");
+		Integer[] intArray=list.stream().toArray(Integer[]::new);
+		Stream.of(intArray).forEach(System.out::println);
 
 	}
 
