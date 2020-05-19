@@ -132,6 +132,8 @@ public class StreamsTest {
 		};
 		
 		ArrayList<String> studentSortList=(ArrayList<String>) students.stream().sorted(comparator).collect(Collectors.toList());
+		
+		System.out.println(studentSortList+"   ***");
 				
 		ArrayList<String> studentSo=(ArrayList<String>) students.stream().sorted((s1,s2)->s2.compareTo(s1)).collect(Collectors.toList());
 		System.out.println(studentSortList);
