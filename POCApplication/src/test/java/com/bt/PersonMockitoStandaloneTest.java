@@ -11,10 +11,10 @@ import org.springframework.test.web.servlet.setup.StandaloneMockMvcBuilder;
 
 import com.bt.controller.rest.PersonController;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+//@RunWith(SpringJUnit4ClassRunner.class)
 public class PersonMockitoStandaloneTest {
 
-	
+/*	
 	private MockMvc mockMvc;
 	
 	
@@ -35,4 +35,5 @@ public class PersonMockitoStandaloneTest {
 		
 		
 	}
+	*/
 }
